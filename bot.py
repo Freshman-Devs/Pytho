@@ -3,7 +3,7 @@ from discord.ext import commands
 import youtube_dl
 
 
-TOKEN = 'NjkxMDg3OTAxMTk4NTE2Mjk1.XpdLzw.OVuruDnhb3q_fy8VFWTXJk9nM9k'
+TOKEN = 'YOUR TOKEN'
 
 
 client = commands.Bot(command_prefix = '~')
@@ -12,7 +12,7 @@ client.remove_command("help")
 @client.event
 async def on_ready():
     print('Ready!')
-    activity = discord.Game(name="in Derpi's Chatroom", type=0)
+    activity = discord.Game(name="whatever you want", type=0)
     await client.change_presence(status=discord.Status.online, activity=activity)
 
 
@@ -37,7 +37,6 @@ async def info(ctx):
 @client.command()
 async def embedsay(ctx, *, arg):
     await ctx.message.delete()
-    channel = client.get_channel(694955133477322845)
     embed = discord.Embed(
         title = 'Someone says...',
         description = arg,
@@ -104,19 +103,19 @@ async def credits(ctx):
 
 @client.command()
 async def ad1(ctx):
-    await ctx.send('Join The Lounge today! https://discord.gg/bXRq7XT')
+    await ctx.send('whatever')
 
 @client.command()
 async def ad2(ctx):
-    await ctx.send('Join Prestons server today! https://discord.gg/PGD7v3E')
+    await ctx.send('whatever')
 
 @client.command()
 async def ad3(ctx):
-    await ctx.send('Your ad here! Free advertisment! Contact **Derpi#0001** for more info.')
+    await ctx.send('whatever')
 
 @client.command()
 async def ad4(ctx):
-    await ctx.send('Your ad here! Free advertisment! Contact **Derpi#0001** for more info.')
+    await ctx.send('whatever')
 
 @client.event
 async def on_member_join(ctx):
