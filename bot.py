@@ -44,10 +44,6 @@ async def embedsay(ctx, *, arg):
 
     )
     embed.set_footer(text= 'Created by Derpi | Version 2.3.0')
-    await channel.send(embed=embed)
-    await channel.send(ctx.author)
-    await channel.send(ctx.guild.name)
-    await channel.send(ctx.channel.name)
     await ctx.send(embed=embed)
     await ctx.send(ctx.author)
 
