@@ -1,9 +1,8 @@
 import discord
 from discord.ext import commands
+import random
 
-
-
-TOKEN = 'YOUR TOKEN'
+TOKEN = 'Your token'
 
 
 client = commands.Bot(command_prefix = '~')
@@ -12,7 +11,9 @@ client.remove_command("help")
 @client.event
 async def on_ready():
     print('Ready!')
-    activity = discord.Game(name="whatever you want", type=0)
+    print('Version 2.6.0')
+    print('Im watching you...')
+    activity = discord.Game(name=random.randint(1,101), type=0)
     await client.change_presence(status=discord.Status.online, activity=activity)
 
 
@@ -25,7 +26,7 @@ async def help(ctx):
 
     )
     embed.set_footer(text= 'Created by Derpi')
-    embed.add_field(name='Commands', value='Help \n Say \n Info \n Ban \n Kick \n Issue \n Home \n Credits \n Ad <1-4> \n Clear <number> \n Invite \n MyInfo \n EmbedSay', inline=False)
+    embed.add_field(name='Commands', value='Help \n Say - mod command \n Info \n Ban - mod command \n Kick - mod command \n Issue \n Credits \n Clear <number> - mod command \n Invite \n MyInfo \n Hi \n EmbedSay \n AboutBot \n RandomGen \n SetStatus - mod command \n calc \n Mute - mod command \n Changelog', inline=False)
     await ctx.send(embed=embed)
 
 
@@ -35,27 +36,32 @@ async def info(ctx):
     await ctx.send('This bot was made by Derpi in Python 3.8, hence the name Pytho.')
 
 @client.command()
-async def embedsay(ctx, *, arg):
+async def embedsay(ctx, *, arg,):
     await ctx.message.delete()
     embed = discord.Embed(
-        title = 'Someone says...',
+        title = "M E S S A G E",
         description = arg,
         colour = discord.Colour.green()
 
     )
-    embed.set_footer(text= 'Created by Derpi | Version 2.3.0')
+    embed.set_footer(text= 'Created by Derpi | Version 2.6.0')
+    await ctx.send(ctx.author.mention + ' says...',)
     await ctx.send(embed=embed)
-    await ctx.send(ctx.author)
 
 @client.command()
-@commands.has_any_role("Admin","Moderator","Owner","Administrator","Dev",)
-async def say(ctx, *, arg):
+@commands.has_any_role("Admin","Moderator","Owner","Administrator","Dev","Mod","Mods","Team",)
+async def say(ctx, *, arg,):
     await ctx.message.delete()
     await ctx.send(arg)
 
+@client.command()
+@commands.is_owner()
+async def ownersay(ctx, *, arg,):
+    await ctx.message.delete()
+    await ctx.send(arg)
 
 @client.command()
-@commands.has_any_role("Admin","Moderator","Owner","Dev",)
+@commands.has_any_role("Admin","Moderator","Owner","Dev","Mods","Mod","Team",)
 async def ban (ctx, member:discord.User=None, reason =None):
     if member == None or member == ctx.message.author:
         await ctx.channel.send("You cannot ban yourself")
@@ -81,13 +87,8 @@ async def shutdown(ctx):
 
 @client.command()
 async def issue(ctx):
-    await ctx.send('No issues detected.')
+    await ctx.send('Ban and kick are currently broken.')
 
-@client.command()
-async def home(ctx):
-    await ctx.send('This is my birthplace and home.')
-    await ctx.send('https://discord.gg/pbw6hPP')
-    await ctx.send('Welcome home.')
 
 
 @client.command()
@@ -97,29 +98,13 @@ async def credits(ctx):
     await ctx.send("Thanks to Jim for the logo.")
 
 
-@client.command()
-async def ad1(ctx):
-    await ctx.send('whatever')
-
-@client.command()
-async def ad2(ctx):
-    await ctx.send('whatever')
-
-@client.command()
-async def ad3(ctx):
-    await ctx.send('whatever')
-
-@client.command()
-async def ad4(ctx):
-    await ctx.send('whatever')
-
 @client.event
 async def on_member_join(ctx):
     role = discord.utils.get(ctx.guild.roles, name = "Member") 
     await ctx.add_roles(role)
 
 @client.command(pass_context=True)
-@commands.has_any_role("Admin","Moderator","Owner","Administrator","Dev",)
+@commands.has_any_role("Admin","Moderator","Owner","Administrator","Dev","Mods","Mod","Team",)
 async def clear(ctx, amount=100):
     channel = ctx.message.channel
     messages = []
@@ -145,5 +130,52 @@ async def myinfo(ctx):
         await ctx.author.send(embed=embed)
         await ctx.send('I sent the info to your DMs! Make sure you have them open.')
 
+@client.command()
+async def hi(ctx):
+    await ctx.send("Hi!")
+
+
+@client.command()
+async def aboutbot(ctx):
+    await ctx.send("Pytho is a product of Freshman Devs. \n Pytho is developed in discord.py \n Developed by <@595397105103667236>")
+
+@client.command()
+@commands.is_owner()
+async def setstatus(ctx, *, arg,):
+    await ctx.message.delete()
+    activity = discord.Game(name=arg, type=0)
+    await client.change_presence(status=discord.Status.online, activity=activity)
+    await ctx.send("Done!")
+    await ctx.send("Status: playing " + arg)
+
+@client.command()
+async def randomgen(ctx):
+    await ctx.send(random.randint(0,101))
+
+@client.command()
+async def calc(ctx, *, arg):
+    await ctx.send(eval(arg))
+
+@client.command()
+@commands.has_any_role("Admin","Moderator","Owner","Administrator","Dev","Mods","Bot Manager", "Mod","Team",)
+async def mute(ctx, member : discord.Member, *, reason = None):
+    muterole = discord.utils.get(ctx.guild.roles, name = "Muted")
+    await ctx.add_roles(member, muterole)
+    await ctx.send('Member was successfully muted.')
+    await ctx.member.send('You were muted in {ctx.guild.name}. Reason:')
+    await ctx.member.send(reason)
+
+
+@client.command()
+async def changelog(ctx):
+    await ctx.message.delete()
+    embed = discord.Embed(
+        title = "Changelog",
+        description = "v2.60 \n - Made ~setstatus owner only \n - Added ~changelog \n - Added ~mute",
+        colour = discord.Colour.green()
+
+    )
+    embed.set_footer(text= 'Created by Derpi | Version 2.6.0')
+    await ctx.send(embed=embed)
 
 client.run(TOKEN)
