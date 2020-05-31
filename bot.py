@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import random
 
-TOKEN = 'Your token'
+TOKEN = 'NjkxMDg3OTAxMTk4NTE2Mjk1.Xstnlw.xWeA9r6M0R4uoYuc2PcjBtru4eA'
 
 
 client = commands.Bot(command_prefix = '~')
@@ -87,7 +87,7 @@ async def shutdown(ctx):
 
 @client.command()
 async def issue(ctx):
-    await ctx.send('Ban and kick are currently broken.')
+    await ctx.send('Broken commands \n - Kick  \n - Ban \n - Mute')
 
 
 
@@ -97,11 +97,6 @@ async def credits(ctx):
     await ctx.send('Thanks to Avery R for some commands like Ban and Kick.')
     await ctx.send("Thanks to Jim for the logo.")
 
-
-@client.event
-async def on_member_join(ctx):
-    role = discord.utils.get(ctx.guild.roles, name = "Member") 
-    await ctx.add_roles(role)
 
 @client.command(pass_context=True)
 @commands.has_any_role("Admin","Moderator","Owner","Administrator","Dev","Mods","Mod","Team",)
@@ -160,7 +155,7 @@ async def calc(ctx, *, arg):
 @commands.has_any_role("Admin","Moderator","Owner","Administrator","Dev","Mods","Bot Manager", "Mod","Team",)
 async def mute(ctx, member : discord.Member, *, reason = None):
     muterole = discord.utils.get(ctx.guild.roles, name = "Muted")
-    await ctx.add_roles(member, muterole)
+    await member.add_roles(member, muterole)
     await ctx.send('Member was successfully muted.')
     await ctx.member.send('You were muted in {ctx.guild.name}. Reason:')
     await ctx.member.send(reason)
