@@ -11,7 +11,7 @@ client.remove_command("help")
 @client.event
 async def on_ready():
     print('Ready!')
-    print('Version 2.6.0')
+    print('Version 2.61')
     print('Im watching you...')
     activity = discord.Game(name=random.randint(1,101), type=0)
     await client.change_presence(status=discord.Status.online, activity=activity)
@@ -166,11 +166,19 @@ async def changelog(ctx):
     await ctx.message.delete()
     embed = discord.Embed(
         title = "Changelog",
-        description = "v2.60 \n - Made ~setstatus owner only \n - Added ~changelog \n - Added ~mute",
+        description = "v2.61 \n - Added anti invite link. (Deletes server invite links)",
         colour = discord.Colour.green()
 
     )
     embed.set_footer(text= 'Created by Derpi | Version 2.6.0')
     await ctx.send(embed=embed)
+
+
+
+@client.event
+async def on_message(message):
+    if "discord.gg" in message.content:
+        await message.delete()
+        await message.channel.send('Invite links are not allowed here!')
 
 client.run(TOKEN)
