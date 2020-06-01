@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import random
 
-TOKEN = 'Your token'
+TOKEN = 'your token'
 
 
 client = commands.Bot(command_prefix = '~')
@@ -11,7 +11,7 @@ client.remove_command("help")
 @client.event
 async def on_ready():
     print('Ready!')
-    print('Version 2.61')
+    print('Version 2.6.0')
     print('Im watching you...')
     activity = discord.Game(name=random.randint(1,101), type=0)
     await client.change_presence(status=discord.Status.online, activity=activity)
@@ -26,7 +26,7 @@ async def help(ctx):
 
     )
     embed.set_footer(text= 'Created by Derpi')
-    embed.add_field(name='Commands', value='Help \n Say - mod command \n Info \n Ban - mod command \n Kick - mod command \n Issue \n Credits \n Clear <number> - mod command \n Invite \n MyInfo \n Hi \n EmbedSay \n AboutBot \n RandomGen \n SetStatus - mod command \n calc \n Mute - mod command \n Changelog', inline=False)
+    embed.add_field(name='Commands', value='Help \n Say - mod command \n Info \n Ban - mod command \n Kick - mod command \n Issue \n Credits \n Clear <number> - mod command \n Invite \n MyInfo \n Hi \n EmbedSay \n AboutBot \n RandomGen \n SetStatus - mod command \n calc \n Mute - mod command \n Changelog \n CreateChannel - mod command', inline=False)
     await ctx.send(embed=embed)
 
 
@@ -166,19 +166,20 @@ async def changelog(ctx):
     await ctx.message.delete()
     embed = discord.Embed(
         title = "Changelog",
-        description = "v2.61 \n - Added anti invite link. (Deletes server invite links)",
+        description = "v2.70 \n - Removed anti invite link. \n Added ~createchannel. (~createchannel <name>)",
         colour = discord.Colour.green()
 
     )
-    embed.set_footer(text= 'Created by Derpi | Version 2.6.0')
+    embed.set_footer(text= 'Created by Derpi | Version 2.61')
     await ctx.send(embed=embed)
 
+@client.command()
+@commands.has_any_role("Admin","Moderator","Owner","Administrator","Dev","Mods","Bot Manager", "Mod","Team",)
+async def createchannel(ctx, *, arg):
+    guild = ctx.message.guild    
+    await ctx.message.delete()
+    await guild.create_text_channel(arg)
 
 
-@client.event
-async def on_message(message):
-    if "discord.gg" in message.content:
-        await message.delete()
-        await message.channel.send('Invite links are not allowed here!')
 
 client.run(TOKEN)
