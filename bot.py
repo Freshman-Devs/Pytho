@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import random
 
-TOKEN = 'your token'
+TOKEN = 'Your token'
 
 
 client = commands.Bot(command_prefix = '~')
@@ -60,7 +60,7 @@ async def ownersay(ctx, *, arg,):
     await ctx.message.delete()
     await ctx.send(arg)
 
-@client.command()
+@client.command(pass_context=True)
 @commands.has_any_role("Admin","Moderator","Owner","Dev","Mods","Mod","Team",)
 async def ban (ctx, member:discord.User=None, reason =None):
     if member == None or member == ctx.message.author:
@@ -70,6 +70,7 @@ async def ban (ctx, member:discord.User=None, reason =None):
         reason = "No reason provided."
     # await ctx.guild.ban(member, reason=reason)
     await ctx.channel.send(f"{member} is banned!")
+    await ctx.ban(member)
     print(f'{member} has been banned from {ctx.guild.name} for {reason}')
 
 @client.command(pass_context = True)
@@ -148,8 +149,9 @@ async def randomgen(ctx):
     await ctx.send(random.randint(0,101))
 
 @client.command()
-async def calc(ctx, *, arg):
-    await ctx.send(eval(arg))
+@commands.is_owner()
+async def code(ctx, *, arg):
+    await eval(arg)
 
 @client.command()
 @commands.has_any_role("Admin","Moderator","Owner","Administrator","Dev","Mods","Bot Manager", "Mod","Team",)
